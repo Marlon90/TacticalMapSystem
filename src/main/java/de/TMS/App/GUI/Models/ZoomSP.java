@@ -8,25 +8,33 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
-public class ZoomableScrollPane extends ScrollPane {
+public class ZoomSP extends ScrollPane {
 	private double scaleValue = 0.7;
 	private double zoomIntensity = 0.02;
 	private Node target;
 	private Node zoomNode;
 
-	public ZoomableScrollPane(Node target) {
+	public ZoomSP(Node target, boolean pannable) {
 		super();
 		this.target = target;
 		this.zoomNode = new Group(target);
 		setContent(outerNode(zoomNode));
 
-		setPannable(true);
+		setPannable(pannable);
 		setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		setFitToHeight(true); // center
 		setFitToWidth(true); // center
 
 		updateScale();
+	}
+
+	public double getScaleValue() {
+		return scaleValue;
+	}
+
+	public void setScaleValue(double scaleValue) {
+		this.scaleValue = scaleValue;
 	}
 
 	public Node getNode() {

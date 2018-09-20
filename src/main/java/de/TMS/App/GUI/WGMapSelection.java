@@ -1,6 +1,6 @@
 package de.TMS.App.GUI;
 
-import de.TMS.App.GUI.Models.ZoomableScrollPane;
+import de.TMS.App.GUI.Models.ZoomSP;
 import de.TMS.App.Utilities.MarthalUtilities;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -23,7 +23,7 @@ public class WGMapSelection extends Application {
 	private ListView<String> mapList = new ListView<String>();
 	private ObservableList<String> allMaps = FXCollections.observableArrayList();
 	private Button select = new Button("Select");
-	private ZoomableScrollPane zoomableScrollPane = new ZoomableScrollPane(imageView);
+	private ZoomSP zoomableScrollPane = new ZoomSP(imageView, true);
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -68,6 +68,7 @@ public class WGMapSelection extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				WGMap mapScreen = new WGMap();
+				//mapScreen.setMap(map);
 				mapScreen.setZoomableScrollPane(zoomableScrollPane);
 				try {
 					mapScreen.start(primaryStage);
