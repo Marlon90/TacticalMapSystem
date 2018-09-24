@@ -23,6 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -45,13 +46,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class WGMap extends Application {
 
@@ -67,9 +71,12 @@ public class WGMap extends Application {
 	private boolean d = false;
 	private Color drawColor = Color.RED;
 	private Color iconColor = Color.TRANSPARENT;
+	private Color gridColor = Color.BLACK;
 	private Blend blend = new Blend();
 	private ColorAdjust monochrome = new ColorAdjust();
 	private double strokeWidth = 10;
+	private double opacity = 0;
+	private GridPane grid;
 
 	public void setMap(String map) {
 		imageView.setImage(new Image("file:.\\images\\" + map + ".jpg"));
@@ -98,28 +105,17 @@ public class WGMap extends Application {
 		s.autosize();
 		s.setVmax(0.5);
 		context(group, imageView);
-		
-		Pane pane = new Pane();
-		pane.getChildren().add(s);
-		int rows = 5;
-		int columns = 5;
-		GridPane grid = new GridPane();
-		for (int i = 0; i < columns; i++) {
-			ColumnConstraints column = new ColumnConstraints(40);
-			grid.getColumnConstraints().add(column);
-		}
 
-		for (int i = 0; i < rows; i++) {
-			RowConstraints row = new RowConstraints(40);
-			grid.getRowConstraints().add(row);
-		}
-		grid.setStyle("-fx-background-color: white; -fx-grid-lines-visible: true");
-		Pane pane2 = new Pane();
+		StackPane pane = new StackPane();
+		pane.getChildren().add(s);
+
+		grid = createGridPane();
+		grid.setOpacity(0);
 		pane.getChildren().add(grid);
-		Pane work = new Pane();
-		work.getChildren().addAll(pane, pane2);
-		pane2.toFront();
-		root.setCenter(work);
+		
+		group.getChildren().addAll(pane);
+		pane.setMouseTransparent(true);
+		root.setCenter(s);
 
 		// Add to objects
 		VBox toolBox = new VBox(5);
@@ -129,11 +125,22 @@ public class WGMap extends Application {
 		Button decreaseSize = new Button("Decrease Size");
 		increaseSizeOfIcon(increaseSize);
 		decreaseSizeOfIcon(decreaseSize);
+		Button gridButton = new Button("Grid On");
+		opacityButtonEvents(gridButton, grid);
+		Button increaseTransparency = new Button("Increase Transparency");
+		Button decreaseTransparency = new Button("Decrease Transparency");
+		stageTransparency(primaryStage, increaseTransparency, decreaseTransparency);		
+		
 		drawLine(group);
 
 		toolBox.getChildren().add(increaseSize);
 		toolBox.getChildren().add(decreaseSize);
 		toolBox.getChildren().add(eraser);
+		toolBox.getChildren().add(gridButton);
+		toolBox.getChildren().add(increaseTransparency);
+		toolBox.getChildren().add(decreaseTransparency);
+		toolBox.setStyle("-fx-color: transparent;");
+		
 		for (Node button : toolBox.getChildren()) {
 			if (button instanceof Button) {
 				buttons.add((Button) button);
@@ -148,17 +155,81 @@ public class WGMap extends Application {
 
 		createBar(topBox);
 		root.setTop(topBox);
-		
+
 		Scene scene = new Scene(root, 800, 800);
 
 		setKeyForEraser(eraser, scene, KeyCode.D);
-
+		
 		primaryStage.setScene(scene);
-		primaryStage.setMaximized(true);
 		primaryStage.setAlwaysOnTop(true);
-
 		primaryStage.show();
 
+	}
+
+	private void stageTransparency(Stage primaryStage, Button increaseTransparency, Button decreaseTransparency) {
+		increaseTransparency.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				if (primaryStage.getOpacity() < 1) {
+					primaryStage.setOpacity(primaryStage.getOpacity() + 0.1);	
+				}
+			}
+		});
+		decreaseTransparency.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				if (primaryStage.getOpacity() > 0.3) {
+					primaryStage.setOpacity(primaryStage.getOpacity() - 0.1);	
+				}
+			}
+		});
+	}
+
+	private void opacityButtonEvents(Button gridButton, GridPane grid) {
+		gridButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+
+				if (grid.getOpacity() == 1) {
+					grid.setOpacity(0);
+					gridButton.setText("Grid On");
+				} else {
+					grid.setOpacity(1);
+					gridButton.setText("Grid Off");
+				}
+			}
+		});
+	}
+
+	private GridPane createGridPane() {
+		double columns = 19;
+		double rows = 11;
+		GridPane grid = new GridPane();
+		for (int i = 0; i < columns; i++) {
+			ColumnConstraints column = new ColumnConstraints(101);
+			grid.getColumnConstraints().add(column);
+		}
+
+		for (int i = 0; i < rows; i++) {
+			RowConstraints row = new RowConstraints(98);
+			grid.getRowConstraints().add(row);
+		}
+
+		for (int i = 0; i < columns; i++) {
+			for (int j = 0; j < rows; j++) {
+				char ch = (char) (65 + i);
+				Label coord = new Label(ch + " " + (j + 1));
+				coord.setTranslateY(-40);
+				coord.setTranslateX(3);
+				grid.add(coord, i, j);
+			}
+		}
+		grid.setStyle("-fx-background-color: transparent; -fx-grid-lines-visible: true");
+		// grid.setOpacity(0.2);
+		return grid;
 	}
 
 	private void createBar(HBox root) {
@@ -183,21 +254,52 @@ public class WGMap extends Application {
 		iconBlue.setId("blue");
 		MenuItem iconWhite = new MenuItem("White");
 		iconWhite.setId("white");
-
 		icon.getItems().addAll(iconRed, iconBlue, iconWhite);
-
+		Menu gridSettings = new Menu("Grid Settings");
+		MenuItem gridRed = new MenuItem("Red");
+		gridRed.setId("red");
+		MenuItem gridBlue = new MenuItem("Blue");
+		gridBlue.setId("blue");
+		MenuItem gridWhite = new MenuItem("White");
+		gridWhite.setId("white");
+		MenuItem gridBlack = new MenuItem("Black");
+		gridBlack.setId("black");
+		MenuItem gridGreen = new MenuItem("Green");
+		gridGreen.setId("green");
+		gridSettings.getItems().addAll(gridRed, gridBlue, gridWhite, gridBlack, gridGreen);
+		
+		gridColorSettings(gridSettings);
 		changeIconColor(icon);
-
 		setSizes(size);
 		changeSize(size);
 
 		drawSettings.getItems().addAll(colors, size);
 		colorConfig(colors);
 
-		mBar.getMenus().addAll(data, drawSettings, icon);
+		mBar.getMenus().addAll(data, drawSettings, icon, gridSettings);
 
 		root.getChildren().add(mBar);
 		System.out.println();
+	}
+
+	private void gridColorSettings(Menu gridSettings) {
+		for (MenuItem menu : gridSettings.getItems()) {
+			menu.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+
+					for (Node node : grid.getChildren()) {
+						if (node instanceof Label) {
+							Label label = (Label) node;
+							gridColor = Color.web(menu.getId());
+							label.setTextFill(gridColor);
+						}
+					}
+
+				}
+			});
+		}
 	}
 
 	private void changeIconColor(Menu icon) {
@@ -443,7 +545,7 @@ public class WGMap extends Application {
 			}
 		}
 	};
-
+	
 	// Right-Click Menu
 	private void context(Group group, ImageView imageView) {
 
@@ -565,7 +667,7 @@ public class WGMap extends Application {
 				if (event.isSecondaryButtonDown() && event.getX() < ivWidth && event.getX() > 1
 						&& event.getY() < ivHeight && event.getY() > 1) {
 					contextMenu.show(imageView, event.getScreenX(), event.getScreenY());
-					System.out.println("Width: " + ivWidth + " Height: " + ivHeight);
+					System.out.println(event.getX() + " Y " + event.getY());
 					event.consume();
 				} else {
 					contextMenu.hide();
@@ -612,21 +714,54 @@ public class WGMap extends Application {
 								colorInputs.put(icon.getId(), cI);
 								blendSettings(icon, cI);
 								setEffectOfIcon(icon, false);
-								System.out.println(
-										"IconID: " + icon.getId() + " " + colorInputs.get(icon.getId()).toString());
-
 							}
 						}
 					});
 
 					icons.add(icon);
-					group.getChildren().add(icon);
+					/*Circle circle = new Circle();
+					circle.setFill(Color.TRANSPARENT);
+				    circle.setStroke(Color.WHITE);
+				    circle.setRadius(24);
+				    circle.setCenterX(mouseX);
+				    circle.setCenterY(mouseY);
+				    circle.setOnMousePressed(circleOnMousePressedEventHandler);
+				    circle.setOnMouseDragged(circleOnMouseDraggedEventHandler);
+				    */
+					group.getChildren().addAll(icon);
 				}
 
 			});
 		}
 	}
-
+	
+    EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
+            new EventHandler<MouseEvent>() {
+     
+            @Override
+            public void handle(MouseEvent t) {
+                orgSceneX = t.getSceneX();
+                orgSceneY = t.getSceneY();
+                orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
+                orgTranslateY = ((Circle)(t.getSource())).getTranslateY();
+                System.out.println("test");
+            }
+        };
+         
+        EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = 
+            new EventHandler<MouseEvent>() {
+     
+            @Override
+            public void handle(MouseEvent t) {
+                double offsetX = t.getSceneX() - orgSceneX;
+                double offsetY = t.getSceneY() - orgSceneY;
+                double newTranslateX = orgTranslateX + offsetX;
+                double newTranslateY = orgTranslateY + offsetY;
+                 
+                ((Circle)(t.getSource())).setTranslateX(newTranslateX);
+                ((Circle)(t.getSource())).setTranslateY(newTranslateY);
+            }
+        };
 	private void setEffectOfIcon(ImageView icon, boolean clear) {
 		if (!clear) {
 			icon.effectProperty()

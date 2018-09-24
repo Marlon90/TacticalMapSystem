@@ -14,8 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class WGMapSelection extends Application {
 
@@ -30,7 +30,6 @@ public class WGMapSelection extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// Initialisation
 		BorderPane root = new BorderPane();
-
 		fillObservableList();
 
 		// Object settings
@@ -47,7 +46,6 @@ public class WGMapSelection extends Application {
 		// Window settings
 		Scene scene = new Scene(root, 800, 800);
 		primaryStage.setScene(scene);
-		
 		primaryStage.show();
 	}
 
