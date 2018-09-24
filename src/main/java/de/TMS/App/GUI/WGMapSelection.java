@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class WGMapSelection extends Application {
@@ -43,10 +44,10 @@ public class WGMapSelection extends Application {
 		root.setLeft(mapList);
 		root.setCenter(zoomableScrollPane);
 		root.setRight(select);
-
 		// Window settings
 		Scene scene = new Scene(root, 800, 800);
 		primaryStage.setScene(scene);
+		
 		primaryStage.show();
 	}
 
@@ -69,7 +70,7 @@ public class WGMapSelection extends Application {
 			public void handle(ActionEvent event) {
 				WGMap mapScreen = new WGMap();
 				//mapScreen.setMap(map);
-				mapScreen.setZoomableScrollPane(zoomableScrollPane);
+				mapScreen.setMap(map);
 				try {
 					mapScreen.start(primaryStage);
 				} catch (Exception e) {

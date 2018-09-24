@@ -1,0 +1,66 @@
+					if (name.equals("Logistic Truck")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\SupplyVehicle.png"));
+					} else if (name.equals("Logistic Helicopter")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\SupplyHelicopter.png"));
+					} else if (name.contains("Command")
+							&& (name.contains("Tank") || name.contains("Fighting Vehicle"))) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\ACV.png"));
+					} else if (name.equals("Forward Operating Base")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Forward Operating Base.png"));
+					} else if (name.contains("Command") && name.contains("Helicopter")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\CommandHelicopter.png"));
+					} else if (name.contains("Command") && (name.contains("Carrier") || name.contains("Jeep"))) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\LightCommandVehicle.png"));
+					} else if (name.contains("Command") && (name.contains("Infantry") || name.contains("Jeep"))) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\InfantryCommandUnit.png"));
+					} else if (name.equals("AA Team")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Infantry (AA).png"));
+					} else if (name.equals("AT Team")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Infantry (AT).png"));
+					} else if (name.equals("Infantry")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Infantry (Riflemen).png"));
+					} else if (name.equals("Special Forces")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Infantry (SF).png"));
+					} else if (name.equals("Armored Personal Carrier")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\APC.png"));
+					} else if (name.equals("Infantry Fighting Vehicle")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\IFV.png"));
+					} else if (name.equals("Anti-Air Vehicle")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Anti-Air Vehicle.png"));
+					} else if (name.equals("Anti-Air Vehicle (Radar)")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Anti-Air Vehicle (Radar).png"));
+					} else if (name.equals("SAM")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\SAM.png"));
+					} else if (name.equals("Mortar")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Mortar.png"));
+					} else if (name.equals("Artillery")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Artillery.png"));
+					} else if (name.equals("MLRS")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\MLRS.png"));
+					} else if (name.equals("Tank")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Tank.png"));
+					} else if (name.equals("Flamethrower Vehicle")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\FlamethrowerVehicle.png"));
+					} else if (name.equals("Recon")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Recon.png"));
+					} else if (name.equals("Recon (Helicopter)")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\ReconHelicopter.png"));
+					} else if (name.equals("Tank-Destroyer")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Tank-Destroyer.png"));
+					} else if (name.equals("Attack Helicopter")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\ATKHelicopter.png"));
+					} else if (name.equals("Transport Helicopter")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\TransportHelicopter.png"));
+					} else if (name.equals("Aircraft (CAP)")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\ASF.png"));
+					} else if (name.equals("Aircraft (CAS)")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\CAS.png"));
+					} else if (name.equals("Aircraft (MRCA)")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\MRAircraft.png"));
+					} else if (name.equals("Aircraft (SEAD)")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Sead.png"));
+					} else if (name.equals("Truck")) {
+						iV.setImage(new Image("file:.\\images\\natoIcons\\Truck.png"));
+					} else {
+						iV.setImage(null);
+					}
